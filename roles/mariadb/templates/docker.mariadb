@@ -1,0 +1,14 @@
+[Unit]
+Description=Mariadb Container
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop {{db.container_name}}
+ExecStartPre=-/usr/bin/docker rm {{db.container_name}}
+ExecStart=/usr/bin/docker run --rm --name {{db.container_name}} -p 0.0.0.0:3306:3306 -e MYSQL_USER={{db.username}} -e MYSQL_PASSWORD={{db.password}} -e MYSQL_ROOT_PASSWORD={{db.root_password}} {{db.container_image}}
+
+[Install]
+WantedBy=multi-user.target

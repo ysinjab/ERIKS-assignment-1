@@ -1,0 +1,7 @@
+---
+- name: restart_db_service
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: docker.mariadb
+

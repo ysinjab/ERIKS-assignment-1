@@ -1,0 +1,27 @@
+---
+# for a bug with Python Docker SDK I couldn't use docker module
+# - name: pull mariadb image 
+#   docker_image:
+#     name: 'mariadb:10.2.14'
+#     force: true
+#     state: present
+
+- name: pull the image 
+  command: docker pull {{ db.container_image }}
+  notify: restart_db_service
+
+- name: create unit mariadb service
+  template:
+    src: docker.mariadb
+    dest: /etc/systemd/system/docker.mariadb.service
+    owner: root
+    group: root
+    mode: '0600'
+  notify: restart_db_service
+
+- name: enable after reboot
+  systemd:
+    name: docker.mariadb
+    enabled: yes
+
+

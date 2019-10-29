@@ -1,0 +1,31 @@
+---
+- name: install a list of packages
+  yum:
+    name:
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+    state: present
+    update_cache: yes
+
+- name: add docker-CE stable repo
+  yum_repository:
+    name: docker-ce-stable
+    description: Docker CE Stable Repo
+    baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
+    gpgkey: https://download.docker.com/linux/centos/gpg
+    gpgcheck: yes
+
+- name: install docker packages 
+  yum:
+    name:
+      - docker-ce 
+      - docker-ce-cli
+      - containerd.io
+    state: present
+
+- name: make sure docker service is running
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: docker

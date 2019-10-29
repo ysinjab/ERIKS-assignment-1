@@ -1,0 +1,6 @@
+---
+- hosts: dbs
+  become: yes
+  roles:
+    - docker
+    - mariadb
